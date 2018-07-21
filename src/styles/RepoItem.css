@@ -1,0 +1,15 @@
+.repo-item {
+  margin-bottom: 2em;
+  display: flex;
+  align-items: center; }
+  .repo-item .repo-stats {
+    margin: 0 1em 0 0; }
+    .repo-item .repo-stats .stat {
+      display: flex;
+      margin-bottom: .5em; }
+      .repo-item .repo-stats .stat label {
+        margin-left: .25em; }
+  .repo-item .repo-info p {
+    margin: 0; }
+  .repo-item .repo-info .repo-title {
+    margin: .25em 0; }
