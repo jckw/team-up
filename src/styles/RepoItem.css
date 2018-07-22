@@ -1,7 +1,7 @@
 .repo-item {
   margin-bottom: 2em;
   display: flex;
-  align-items: center; }
+  align-items: start; }
   .repo-item .repo-stats {
     margin: 0 1em 0 0; }
     .repo-item .repo-stats .stat {
@@ -9,7 +9,10 @@
       margin-bottom: .5em; }
       .repo-item .repo-stats .stat label {
         margin-left: .25em; }
+      .repo-item .repo-stats .stat .stat-icon {
+        height: 1.2em;
+        margin-top: .15em; }
   .repo-item .repo-info p {
     margin: 0; }
   .repo-item .repo-info .repo-title {
-    margin: .25em 0; }
+    margin: 0 0 .25em 0; }

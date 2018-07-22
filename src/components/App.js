@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import '../styles/App.css';
 import {Navbar} from './Navbar'
-import {RepoList} from './RepoList'
+import RepoList from './RepoList'
 import {CategoryNav} from "./CategoryNav";
 
 class App extends Component {

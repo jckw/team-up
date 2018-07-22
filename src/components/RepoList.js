@@ -1,24 +1,27 @@
 import React, {Component} from 'react';
 import {RepoItem} from "./RepoItem";
 import '../styles/RepoList.css'
+import {graphql} from 'react-apollo';
+import gql from 'graphql-tag';
 
-export class RepoList extends Component {
+class RepoList extends Component {
     render() {
-        const repos = [{
-            title: "Adafruit_LSM9DS0",
-            url: "https://github.com/jckw/Adafruit_LSM9DS0",
-            owner: {
-                name: "jckw",
-                url: "https://github.com/jckw"
-            },
-            description: "A python module for the Adafruit LSM9DS0 breakout board, for use with the Raspberry Pi",
-            stars: 4,
-            contributors: 1,
-            language: "Python",
-            tags: ["Python", "hardware", "great guy"]
-        }];
-        const repoItems = repos.map((repo) =>
-            <RepoItem key={repo.url} repo={repo}/> // Repository URLs are unique
+        if (this.props.repoQuery && this.props.repoQuery.loading) {
+            return (
+                <div>Loading...</div>
+            )
+        }
+
+        if (this.props.repoQuery && this.props.repoQuery.error) {
+            return (
+                <div>Error loading repos</div>
+            )
+        }
+
+        const repos = this.props.repoQuery.search.edges;
+
+        const repoItems = repos.map((edge) =>
+            <RepoItem key={edge.node.url} repo={edge.node}/> // Repository URLs are unique
         );
 
         return (
@@ -28,3 +31,41 @@ export class RepoList extends Component {
         )
     }
 }
+
+const REPO_QUERY = gql`
+query { 
+  search(query:"help-wanted-issues:>0 stars:3..300 language:python pushed:>2018-07-14", type:REPOSITORY, first: 4) {
+    repositoryCount
+    edges {
+      node {
+        ... on Repository {
+          name
+          description
+          url
+          owner {
+            login
+            url
+          }
+          stargazers {
+            totalCount
+          }
+          issues {
+            totalCount
+          }
+          repositoryTopics(first: 3) {
+            nodes {
+              ... on RepositoryTopic {
+                topic {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
+export default graphql(REPO_QUERY, {name: "repoQuery"})(RepoList)

@@ -2,26 +2,33 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {TagSection} from "./TagSection";
 import '../styles/RepoItem.css'
-import {Star, Users} from 'react-feather';
+import {Star, AlertCircle} from 'react-feather';
 
 export class RepoItem extends Component {
     render() {
+        const tags = this.props.repo.repositoryTopics.nodes.map((node) => node.topic.name);
+
         return (
             <article className="repo-item">
                 <div className="repo-stats">
                     <section className="stat">
-                        <Star/><label>{this.props.repo.stars}</label>
+                        <Star className="stat-icon"/><label>{this.props.repo.stargazers.totalCount}</label>
                     </section>
                     <section className="stat">
-                        <Users/><label>6</label>
+                        <AlertCircle className="stat-icon"/><label>{this.props.repo.issues.totalCount}</label>
                     </section>
                 </div>
                 <div className="repo-info">
-                    <TagSection tags={this.props.repo.tags}/>
                     <h5 className="repo-title">
-                        <a href={this.props.repo.owner.url}>{this.props.repo.owner.name}</a>/<a href={this.props.repo.url}>{this.props.repo.title}</a>
+                        <a href={this.props.repo.owner.url}>
+                            {this.props.repo.owner.login}
+                        </a>/
+                        <a href={this.props.repo.url}>
+                            {this.props.repo.name}
+                        </a>
                     </h5>
                     <p>{this.props.repo.description}</p>
+                    <TagSection tags={tags}/>
                 </div>
             </article>
         )
@@ -29,17 +36,5 @@ export class RepoItem extends Component {
 }
 
 RepoItem.propTypes = {
-    repo: PropTypes.shape({
-        title: PropTypes.string,
-        url: PropTypes.string,
-        owner: PropTypes.shape({
-            name: PropTypes.string,
-            url: PropTypes.string
-        }),
-        description: PropTypes.string,
-        stars: PropTypes.number,
-        contributors: PropTypes.number,
-        language: PropTypes.string,
-        tags: PropTypes.arrayOf(PropTypes.string)
-    })
+    repo: PropTypes.object
 };
